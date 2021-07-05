@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('#Login').click(function(){
+          $("#loginForm").show();
+        })
+      })
+    </script>
+
+  </head>
+
+  <body>
+    <nav>
+      <div class="logo">
+        <h5>LabsWorld</h5>
+    </div>
+    
+      <ul class="nav-links">
+          <li><a href="/"><strong>Home</strong></a></li>
+          <li><a href="/lab">Lab</a></a></li>
+          <li> <a href="#team">Team</a></li>
+          <li>  <a href="#middle">Resources</a></li>
+         
+          <li><a href="#contact">Contact</a></li>
+
+          <% if(user){%>
+
+              <% if(user.local.admin==1){%>
+                <li><a href="/admin">Admin</a></li>
+              <%}%>
+              <li><a href="userProfile">PROFILE</a></li>
+              <li><a href="/users/logout">Logout</a></li>
+
+          <%}else{%>
+
+              <li><a href="/users/register">Register</a></li>
+              <li><a href="/users/login" id="Login">Login</a></li>
+          
+          <%}%>
+      </ul>
+  </nav>
+              
+
+    <div class="container">
+      <%- messages('messages', locals) %>
+        <% if(errors){ %>
+          <% errors.forEach(function(error){ %>
+            <div class="alert alert-danger">
+              <%= error.msg %>
+            </div>
+            <% }); %>
+              <% } %>
+                <div class="row">
+                  <div class="col-xs-12 col-md-1"></div>
+                  <div class="col-xs-12 col-md-8">
+                    </div>
+                    </div>
+    </div>
+    <div id="loginForm">
+      
+    </div>
+  </body>
+    <script>
+      const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+    const links = document.querySelectorAll(".nav-links li");
+    console.log(hamburger);
+    hamburger.addEventListener('click', ()=>{
+       //Animate Links
+        navLinks.classList.toggle("open");
+        links.forEach(link => {
+            link.classList.toggle("fade");
+        });
+    
+        //Hamburger Animation
+        hamburger.classList.toggle("toggle");
+    });
+    </script>
+    </html>

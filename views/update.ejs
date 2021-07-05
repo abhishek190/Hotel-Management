@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link href="assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  
+     <script>
+         $(document).ready(function (){
+         var baseUrl = (window.location).href;
+         var koopId = baseUrl.substring(baseUrl.lastIndexOf('=') + 1); 
+         console.log(koopId);  
+         document.getElementById('Id').value = koopId;
+         function myFunction(){
+            document.getElementById("Id").value =koopId; 
+         }
+         $.ajax({
+          url:'/getValue',
+          method:'POST',
+          data:{page:koopId},
+          dataType:"JSON",
+          success:function(result){
+            document.getElementById("roomtype").value =result[0].RoomType;
+            document.getElementById("roomlocation").value =result[0].RoomLocation;
+            document.getElementById("roomcharge").value =result[0].RoomCharge;
+            document.getElementById("roomstatus").value =result[0].RoomStatus;
+          }
+        })
+    }); 
+     </script>
+     </head>
+     <body>
+    <!-- Background image -->
+    <div
+    class="bg-image"
+    style="
+      background-image:url('https://images.unsplash.com/photo-1517840901100-8179e982acb7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+      height: 100vh;
+      position: relative;
+    ">
+    
+<!-- Background image -->
+         <div class="jumbotron" style=" background-color:transparent; width: 50%; margin-left: 25%; padding: 3%; align-content: flex-start; box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 20px 9px 15px 6px rgba(0,0,0,0.85);">
+            <center>
+<form method="POST" action="/users/update" style="align-items: center;padding: 5%;">
+    <label style="color: white; text-align: left;">Room Type</label>
+    <input type="text" name="RoomType" id="roomtype" ><br><br>
+    <label style="color: white; text-align: left; margin-left: -4%;">Room Location</label>
+    <input type="text" name="RoomLocation" id="roomlocation" ><br><br>
+    <label style="color: white; text-align: left;margin-left: -2%;">Room Charge</label>
+    <input type="text" name="RoomCharge" id="roomcharge" ><br><br>
+    <label style="color: white; text-align: left;margin-left: -1%;">Room Status</label>
+    <input type="text" name="RoomStatus" id="roomstatus" ><br><br>
+    <input type="hidden" name="id" id="Id" value="" />
+    <button type="submit" onclick="myFunction()" >Submit</button>
+</form>   </center>
+</div>
+</div>
+</body>
+</html>

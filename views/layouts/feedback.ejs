@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css">
+       <!-- Bootstrap CSS -->
+       <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css'>
+       <!-- Font Awesome CSS -->
+       <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.3.1/css/all.css'>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/feedback.css">
+</head>
+
+<body>
+<div id="vertical">
+    <div class="wrapper">
+    <a href="#" data-toggle="modal" data-target="#feedbackModal"><strong>FEEDBACK</strong></a>
+</div>
+</div>
+<div class="modal" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document"style="width:70%">
+        <div>
+
+            <div class="modal-header">
+                <p>FeedBack</p>
+            </div>
+            
+            <div class="modal-content">
+                <% if(user){%>
+
+                    <form action="/feedback" method="POST">
+                    <div class="rating" >
+                            
+                        <input id="star5" name="star" type="radio" value="5" class="radio-btn hide" style="display: none;"/>
+                        <label for="star5" style="font-size: 50px;">☆</label>
+                        <input id="star4" name="star" type="radio" value="4" class="radio-btn hide" style="display: none;"/>
+                        <label for="star4" style="font-size: 50px;" >☆</label>
+                        <input id="star3" name="star" type="radio" value="3" class="radio-btn hide" style="display: none;"/>
+                        <label for="star3" style="font-size: 50px;">☆</label>
+                        <input id="star2" name="star" type="radio" value="2" class="radio-btn hide" style="display: none;"/>
+                        <label for="star2" style="font-size: 50px;">☆</label>
+                        <input id="star1" name="star" type="radio" value="1" class="radio-btn hide" style="display: none;"/>
+                        <label for="star1" style="font-size: 50px;" >☆</label>
+                        <div class="clear"></div>
+                    </div>
+                    <label for="fb_text">Description</label>
+                    <textarea id="fb_text" name="feedback_text" class="form-control" rows="5" required></textarea>
+                    <div class="modal-footer">
+                        <button name="submit_feedback" type="submit" class="btn btn-primary">Send Feedback</button>
+                    </div> 
+                       
+                    </form>      
+        </div>
+       
+                  <%}else{%>
+                    <form action="/Questions" method="POST">
+                    <p><b>GOT QUESTIONS? SEND US.</b></p>
+                  
+                    <label for="emailID">YOUR EMAIL</label>
+                    <input type="email" id="emailID" name="visitor_email" class="form-control" required>
+                    <label for="Qn_text">Description</label>
+                    <textarea id="Qn_text" name="Qn_text" class="form-control" required></textarea>      
+       <div class="modal-footer">
+            <button name="send_qn" type="submit" class="btn btn-primary">SEND</button>
+        </div> 
+    </form>
+                  <%}%>
+                
+                
+             
+                
+            </div>
+
+        </div>
+</div>
+<!-- Popper JS -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
+<!-- Bootstrap JS -->
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
+</body>
+</html>

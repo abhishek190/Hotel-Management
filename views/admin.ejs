@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="css/admin.css" rel="stylesheet">
+   <script>
+    $(document).ready(function(){
+        no=1;
+        $("#publishLab").click(function(e){
+          $('.welcome').css("display","none");
+         $.get("/publishLab",(result,status)=>{ 
+             $(".QuesTable").empty(); 
+             no=result.length;
+             if(no!=0){$('.publish').css("display","block");}
+             else{$('#addProblems').css("display","block");}
+             for(let i=0;i<result.length;i++){
+                 console.log(result[i]);
+                 var id=result[i]._id;
+                 console.log(id);
+                 $('.QuesTable').append(`<tr><td>`+(i+1)+`</td>
+                                         <td><a>`+result[i].RoomType+`</a></td>
+                                         <td>`+result[i].RoomLocation+`</td>
+                                         <td>`+result[i].RoomCharge+`</td>
+                                         <td>`+result[i].RoomStatus+`</td>
+                                         <td><a href="/update?id=`+id+`"id=`+id+`>Update</td>
+                                         <td><a href="" class="btnDelete" id=`+id+`>🗑</td>
+                                         </tr>
+                 `);
+                 // $('#quest').append('<a href=/newPage?id='+id+'>'+`${i+1}`+result[i].title.slice(2)+'\xa0\xa0\xa0\xa0\xa0\xa0\xa0'+result[i].rating+"<br>");
+             }
+         })
+        })
+        $('.QuesTable').on('click','.update',function(e){
+             e.preventDefault();
+             $.ajax({
+                 url:'/update',
+                 method:"POST",
+                 data:{page:id},
+                 dataType:'JSON'  
+             })
+         })
+         $('.QuesTable').on('click','.btnDelete',function(e){
+             $(this).closest('tr').remove();
+             e.preventDefault();
+             var id = $(this).attr('id');
+             console.log(no);
+             console.log(id);
+             $.ajax({
+                 url:'/delete',
+                 method:"POST",
+                 data:{page:id},
+                 dataType:'JSON'  
+             })
+             no-=1;
+             if(no==0){
+                 $('.publish').hide();
+                 $('#addProblems').show();
+             }
+         })
+         
+     })
+ </script>    
+</head>
+    <body>
+      <!-- Background image -->
+      <div
+      class="bg-image"
+      style="
+        background-image:url('https://images.unsplash.com/photo-1517840901100-8179e982acb7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        height: 100vh;
+      ">
+      
+<!-- Background image -->
+      <header>
+        <nav class="navbar navbar-expand-lg">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="toggle-navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="collapse navbar-collapse" id="navbar-content">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/lab">Create Room</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/userProfile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="javascript:void(0)" id="publishLab">Rooms</a>
+                  </li>
+                 
+              </ul>
+            </div>
+          </nav>
+          <div class="box">
+              <div class="box-1"></div>
+              <div class="box-2"></div>
+            </div>
+          </header>
+ <center>
+   <div>
+     <h1 class="welcome" style="color: white; margin-top: 5%;"><strong>Welcome to admin panel</strong></h1>
+   </div>
+   <div class="publish" style="width: 50%; padding: 5%;">
+    <table  class="table table-dark "  id="tableId">
+        <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Type</th>
+            <th scope="col">Location</th>
+            <th scope="col">Charge</th>
+            <th scope="col">Room Status</th>
+            <th scope="col">Update</th>
+            
+        </tr>
+        <tbody class="QuesTable">
+        </tbody>
+    </table>
+   </div>
+   <p id="addProblems" style="margin-top: 10%;"><strong>No lab to Publish</strong></p>
+</center>
+</div>
+  </body>
+  </html>

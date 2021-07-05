@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link href="assets/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/lab.css">
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        var admin='<%-isAdmin%>';
+        var disp = ''
+        if(admin==1){disp = 'block'}
+        else disp='none'
+        console.log(admin);
+        if(admin==1){
+          $(".edit").show();
+          $(".Room").show();
+          $(".table").hide();
+        }
+        if(admin==0){
+          $(".table").show();
+        }
+        var url=(window.location).href;
+        var courseByUrl=url.substring(url.lastIndexOf('?') + 1);
+        console.log(courseByUrl)
+        if(courseByUrl!=url){
+         var course=courseByUrl;
+        $.ajax({
+          url:'/filter',
+          method:'POST',
+          data:{course:course},
+          dataType:"JSON",
+          success:function(result){
+            
+            $('#card_row').empty();
+            for(i=0;i<result.length;i++){
+          console.log(result[i]);
+          $('#card_row').append(`
+          <div class="card-deck" style="padding:4%">
+                            <div class="card card-2">
+                              
+                                <img src="/uploads/image-1603183764252.png" class="card-img-top " alt="...">
+                                <div class="card-body">
+                                  <h5 class="card-title" style="text-align: center;"><b>`+result[i].heading+`</b></h5>
+                                  
+                                  <p class="card-text" style="color:black">`+result[i].description
+                                    +`</p>
+                                  <a href="/admin/editLabAdmin?id=`+result[i]._id+`" style="display:`+disp+`" class="edit">edit</a>
+                                  <center>
+                                    <a href="`+result[i].link+`" class="w3-btn w3-round">click</a></center>
+                                </div>
+                              </div>
+                        </div>
+          `)
+        
+        }
+          }
+        })  
+        }
+        else{
+          $.get('/data',(result,status)=>{
+        console.log(result);
+        for(i=0;i<result.length;i++){
+          console.log(result[i]);
+          $('#card_row').append(`
+          <div class="card-deck" style="padding:4%">
+                            <div class="card card-2">
+                              
+                                <img src="/uploads/`+result[i].image +`" class="card-img-top " alt="...">
+                                <div class="card-body">
+                                  <h5 class="card-title" style="text-align: center;"><b>`+result[i].heading+`</b></h5>
+                                  
+                                  <p class="card-text" style="color:black">`+result[i].description
+                                    +`</p>
+                                  <a href="/admin/editLabAdmin?id=`+result[i]._id+`" style="display:`+disp+`"  class="edit">edit</a>
+                                  <center>
+                                    <a href="`+result[i].link+`" class="w3-btn w3-round">click</a></center>
+                                </div>
+                              </div>
+                        </div>
+          `)
+        }
+      })
+        }
+        
+        no=1;
+          $('.welcome').css("display","none");
+         $.get("/ClientPublishLab",(result,status)=>{ 
+             $(".QuesTable").empty(); 
+             no=result.length;
+             console.log(no);
+             if(no!=0){$('.publish').css("display","block");}
+             else{$('#addProblems').css("display","block");}
+             for(let i=0;i<result.length;i++){
+                 console.log(result[i]);
+                 var id=result[i]._id;
+                 console.log(id);
+                 
+                 $('.QuesTable').append(`<tr><td>`+(i+1)+`</td>
+                                         <td><a>`+result[i].RoomType+`</a></td>
+                                         <td>`+result[i].RoomLocation+`</td>
+                                         <td>`+result[i].RoomCharge+`</td>
+                                         <td>`+result[i].RoomStatus+`</td>
+                                         <td><button class="CheckIn" id=`+id+`>CheckIn</td>
+                                         </tr>
+                 `);
+                 // $('#quest').append('<a href=/newPage?id='+id+'>'+`${i+1}`+result[i].title.slice(2)+'\xa0\xa0\xa0\xa0\xa0\xa0\xa0'+result[i].rating+"<br>");
+             }
+         })
+      $('.QuesTable').on('click','.CheckIn',function(e){
+        $(this).closest('tr').remove();
+        e.preventDefault();
+        var id = $(this).attr('id');
+        console.log(no);
+        console.log(id);
+        $.ajax({
+                 url:'/checkIn',
+                 method:"POST",
+                 data:{page:id},
+                 dataType:'JSON'
+        })
+        no--;
+        console.log(no);
+        if(no==0){
+        $('.ClientRoom').hide();
+        $('.Available').show();
+        }
+         
+      });
+      $('.course').click(function(e){
+        course=$(this).val();
+        e.preventDefault();
+        $.ajax({
+          url:'/filter',
+          method:'POST',
+          data:{course:course},
+          dataType:"JSON",
+          success:function(result){
+            $('#card_row').empty();
+            for(i=0;i<result.length;i++){
+          console.log(result[i]);
+          $('#card_row').append(`
+          <div class="card-deck" style="padding:4%">
+                            <div class="card card-2">
+                              
+                                <img src="/uploads/`+result[i].image +`" class="card-img-top " alt="...">
+                                <div class="card-body">
+                                  <h5 class="card-title" style="text-align: center;"><b>`+result[i].heading+`</b></h5>
+                                  
+                                  <p class="card-text" style="color:black">`+result[i].description
+                                    +`</p>
+                                  <a href="/admin/editLabAdmin?id=`+result[i]._id+`" style="display:`+disp+`" class="edit">edit</a>
+                                  <center>
+                                    <a href="`+result[i].link+`" style="margin-left:8%"class="w3-btn w3-round">click</a></center>
+                                </div>
+                              </div>
+                        </div>
+          `)
+        }
+          }
+        })
+      })
+    });
+    $.ajax({
+          url:'/edit',
+          method:'POST',
+          data:{id:$("edit")},
+          dataType:"JSON",
+          success:function(result){
+          }
+        })
+    </script>   
+  </head>
+
+
+  <body>
+    <!-- Background image -->
+      <div
+      class="bg-image"
+      style="
+        background-image:url('https://images.unsplash.com/photo-1517840901100-8179e982acb7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+        height: 100vh;
+      ">
+      
+<!-- Background image -->
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="toggle-navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbar-content">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/lab">Room</a>
+              </li>
+              
+              <% if(user){%>
+                <% if(user.local.admin==1){%>
+                  <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/userProfile">Profile</a></li>
+              
+                <li class="nav-item"><a class="nav-link" href="/users/logout">Logout</a></li>
+                <%}else{%>
+                <li class="nav-item"><a class="nav-link" href="/users/Mybooking" id="Login">My Booking</a></li>
+                <li class="nav-item"><a class="nav-link" href="/userProfile">Profile</a></li>
+              
+                <li class="nav-item"><a class="nav-link" href="/users/logout">Logout</a></li>
+                <%}%>
+              <%}else{%>
+  
+              
+                <li class="nav-item"><a class="nav-link" href="/users/register">Register</a></li>
+             
+              
+                <li class="nav-item"><a class="nav-link" href="/users/login" id="Login">Login</a></li>
+            
+              <%}%>
+            </ul>
+          </div>
+        </nav>
+        <div class="box">
+            <div class="box-1"></div>
+            <div class="box-2"></div>
+        </div>
+    </header>
+  
+      <div class="jumbotron Room " style="box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 20px 9px 15px 6px rgba(0,0,0,0.85);">
+          <center><h1>Create Room</h1></center>
+        <form action="/publish_lab" method="POST" style="box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
+          <input type="text" class="form-control" aria-label="Room" aria-describedby="inputGroup-sizing-sm" name="RoomID" placeholder="Room ID" style="padding: 2%;"><br>
+          <input type="text" class="form-control" aria-label="Room" aria-describedby="inputGroup-sizing-sm" name="RoomType" placeholder="Room Type" style="padding: 2%;"><br>
+          <input type="text" class="form-control" aria-label="Room" aria-describedby="inputGroup-sizing-sm" name="RoomLocation" placeholder="Room Location" style="padding: 2%;"><br>
+          <input type="text" class="form-control" aria-label="Room" aria-describedby="inputGroup-sizing-sm" name="RoomCharge" placeholder="Room charge" style="padding: 2%;"><br>
+          <center><button type="submit" value="CREATE ROOM">Submit</button> </center>
+        </form>
+      </div>
+    <div class="publish ClientRoom " style="box-shadow: 5px 5px 5px 0px #000000, inset 4px 4px 15px 0px #000000, 20px 9px 15px 6px rgba(0,0,0,0.85); width: 50%;  margin-left: 25%; margin-top:2%;display: none;">
+      <table  class="table table-striped "  id="tableId" >
+          <tr>
+              <th scope="col" style="color: white;">#ID</th>
+              <th scope="col" style="color: white;">Type</th>
+              <th scope="col" style="color: white;">Location</th>
+              <th scope="col" style="color: white;">Charge</th>
+              <th scope="col" style="color: white;">Room Status</th>
+              <th scope="col" style="color: white;">CheckIn</th>
+          </tr>
+          <tbody class="QuesTable" style="color: white; box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;">
+          </tbody>
+      </table>
+     </div>
+     <center>
+     <div class="Available">
+       <h1>No Booking Available</h1>
+     </div>
+    </center>
+  </div>
+  </body>
+ 

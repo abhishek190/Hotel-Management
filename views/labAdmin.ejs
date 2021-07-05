@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--Jquery-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>    
+    <!--AJAX-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+      .custom-control-label:hover {
+        color:red;
+      }
+      body{
+            background: rgb(221,43,86);
+            background: linear-gradient(96deg, rgba(221,43,86,1) 43%, rgba(175,14,234,0.7486344879748774) 100%);
+  }
+      .nav-link:hover{
+        background-color: grey;
+      }
+    </style>
+
+<body class="d-flex flex-column vh-100">
+  <main class="container mt-5">
+  <div class="row mb-3">
+    <div class="col-6 offset-3 jumbotron">
+      <h1 class="form-text col-12 text-center mb-3">Publish Your Own Lab</h1>
+      <form action="/admin/labAdmin" method="POST" enctype="multipart/form-data">
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio2" name="optradio" class="custom-control-input" value="electronics">
+          <label class="custom-control-label" for="customRadio2">Electronics & Communications</label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio3" name="optradio" class="custom-control-input" value="electrical">
+          <label class="custom-control-label" for="customRadio3">Electrical Engineering</label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio4" name="optradio" class="custom-control-input" value="mechanical">
+          <label class="custom-control-label" for="customRadio4">Mechanical Engineering</label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio5" name="optradio" class="custom-control-input" value="chemical">
+          <label class="custom-control-label" for="customRadio5">Chemical Engineering</label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio6" name="optradio" class="custom-control-input" value="biotechnology">
+          <label class="custom-control-label" for="customRadio6">Biotechnology & Biomedical Engineering</label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio7" name="optradio" class="custom-control-input" value="physical">
+          <label class="custom-control-label" for="customRadio7">Physical Sciences</label>
+        </div>
+        <div class="custom-control custom-radio mb-3">
+          <input type="radio" id="customRadio8" name="optradio" class="custom-control-input" value="chemical">
+          <label class="custom-control-label" for="customRadio8">Chemical Sciences</label>
+        </div>
+        <h4>Provide some description</h4>
+        <div class="mb-2">
+          <textarea type="text" class="form-control" cols="10" rows="4" name="description" id="description" placeholder="Description about your Lab" required></textarea>
+        </div>
+        <div class="input-group mb-3">   
+          <span class="input-group-text text-danger">Link</span>
+          <input type="text" class="form-control" id="link" placeholder="link" name="link" required>
+        </div>
+        <div class="input-group mb-3">   
+          <span class="input-group-text text-danger">Image</span>
+          <input type="file" class="form-control" id="image" name="image" required>
+        </div>
+        <div class="col-6 offset-3 text-center">
+             <button type="submit" class="btn btn-danger" id="button">Submit</button> 
+        </div> 
+      </div> 
+    </form>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
