@@ -1,12 +1,7 @@
 # Vitual labs
 
 # Description 
-This is a project build for the students who are pursuing any kind of engineering degree or any field 
-which requires lab practices.! In this project anyone can register his/her account and practices any
-lab which he/she need. Anyone can register through his social media account such as google /facebook etc.
-One can also register through his/her local account. 
-Besides that anyone who have build a lab and wants to add it to the virtual lab can do so.!
-To publish the lab one should sent the request containing the branch and description of the lab he have built.! Based on the request admin can accept/reject his her lab.!
+This project is build for managing bookings.
 
 ---
 ## Requirements
